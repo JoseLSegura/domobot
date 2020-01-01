@@ -1,0 +1,4 @@
+A Telegram bot to control some domotics at home.
+
+Initially, this projects emerge from the neccessity of controlling a garage door using a
+Raspberry Pi and its GPIO interface.
