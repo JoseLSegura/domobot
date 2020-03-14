@@ -1,34 +1,26 @@
-from enum import Enum, auto
+import logging
+
+from gpiozero import DigitalOutputDevice
+from garage_door_controller import GarageDoor
 
 
-MOTOR = None
+DOOR = None
 
 
-def get_motor():
-    global MOTOR
-    if MOTOR is None:
-        MOTOR = Motor()
+def get_door(args=None):
+    global DOOR
 
-    return MOTOR
+    if not DOOR:
+        if not args:
+            logging.error(
+                "The GarageDoor object needs configuration for the first time")
+            return None
 
+        DOOR = GarageDoor(args.pin_lock, args.pin_motor_open, args.pin_motor_close)
+        return DOOR
 
-class MotorStatus(Enum):
-    CLOSED = auto()
-    OPENING = auto()
-    OPENED = auto()
-    CLOSING = auto()
-    OPENING_STOPPED = auto()
-    CLOSING_STOPPED = auto()
+    if args:
+        logging.warning(
+            "Garage door already configured. Ignoring configuration")
 
-
-class Motor:
-    def __init__(self):
-        self.status = MotorStatus.CLOSED
-
-    def open(self):
-        if self.status is MotorStatus.OPEN:
-            return
-
-        if self.status is MotorStatus.CLOSED:
-            # lock.open()
-            pass
+    return DOOR
