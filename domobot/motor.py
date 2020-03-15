@@ -7,16 +7,16 @@ from garage_door_controller import GarageDoor
 DOOR = None
 
 
-def get_door(args=None):
+def get_door(garage_door_config=None):
     global DOOR
 
     if not DOOR:
-        if not args:
+        if not garage_door_config:
             logging.error(
                 "The GarageDoor object needs configuration for the first time")
             return None
 
-        DOOR = GarageDoor(args.pin_lock, args.pin_motor_open, args.pin_motor_close)
+        DOOR = GarageDoor(**garage_door_config)
         return DOOR
 
     if args:
