@@ -5,10 +5,11 @@ from aiogram import Bot, Dispatcher, executor
 
 from domobot.config import load_config
 from domobot.handlers import welcome, open_door, close_door
-from domobot.motor import get_motor
+from domobot.motor import get_door
 
 
 def domobot_main():
+    """Handler for domobot entry point."""
     logging.basicConfig(filename='log', level=logging.DEBUG)
 
     if len(sys.argv) != 2:
@@ -17,6 +18,7 @@ def domobot_main():
 
     config_path = sys.argv[1]
     config = load_config(config_path)
+    print(config_path)
     bot = Bot(token=config["telegram"]["token"])
     dispatcher = Dispatcher(bot)
 

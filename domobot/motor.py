@@ -1,6 +1,5 @@
 import logging
 
-from gpiozero import DigitalOutputDevice
 from garage_door_controller import GarageDoor
 
 
@@ -19,7 +18,7 @@ def get_door(garage_door_config=None):
         DOOR = GarageDoor(**garage_door_config)
         return DOOR
 
-    if args:
+    if garage_door_config:
         logging.warning(
             "Garage door already configured. Ignoring configuration")
 
