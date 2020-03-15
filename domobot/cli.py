@@ -4,7 +4,7 @@ import sys
 from aiogram import Bot, Dispatcher, executor
 
 from domobot.config import load_config
-from domobot.handlers import welcome, open_door
+from domobot.handlers import welcome, open_door, close_door
 from domobot.motor import get_motor
 
 
@@ -20,9 +20,11 @@ def domobot_main():
     bot = Bot(token=config["telegram"]["token"])
     dispatcher = Dispatcher(bot)
 
-    m = get_motor()
+    get_door(config["garage_door"])
+
     dispatcher.register_message_handler(welcome, commands=['start'])
     dispatcher.register_message_handler(open_door, commands=['open'])
+    dispatcher.register_message_handler(close_door, commands=['close'])
     executor.start_polling(dispatcher, skip_updates=True)
 
     return 0
