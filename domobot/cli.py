@@ -1,28 +1,26 @@
-import argparse
 import logging
+import sys
 
 from aiogram import Bot, Dispatcher, executor
 
-from .handlers import welcome, open_door
-from .motor import get_motor
+from domobot.config import load_config
+from domobot.handlers import welcome, open_door
+from domobot.motor import get_motor
 
 
 def domobot_main():
     logging.basicConfig(filename='log', level=logging.DEBUG)
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '--token', type=str, required=True,
-        help='Telegram bot API token to be used'
-    )
+    if len(sys.argv) != 2:
+        logging.error("Missing configuration file")
+        return 1
 
-    args = parser.parse_args()
-    bot = Bot(token=args.token)
+    config_path = sys.argv[1]
+    config = load_config(config_path)
+    bot = Bot(token=config["telegram"]["token"])
     dispatcher = Dispatcher(bot)
 
     m = get_motor()
-    print(f'Motor id: {id(m)}')
-
     dispatcher.register_message_handler(welcome, commands=['start'])
     dispatcher.register_message_handler(open_door, commands=['open'])
     executor.start_polling(dispatcher, skip_updates=True)
