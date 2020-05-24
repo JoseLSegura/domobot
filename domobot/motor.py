@@ -1,25 +1,35 @@
-import logging
+"""domobot.motor module includes the motor factory."""
+
+from enum import Enum
 
 from garage_door_controller import GarageDoor
 
 
-DOOR = None
+Status = Enum("Status", ["OPENED", "CLOSED"])
 
 
-def get_door(garage_door_config=None):
-    global DOOR
+class StatusGarageDoor:
+    """Store a `GarageDoor` and a best guess for its status."""
 
-    if not DOOR:
-        if not garage_door_config:
-            logging.error(
-                "The GarageDoor object needs configuration for the first time")
-            return None
+    def __init__(self, garage_door_config):
+        """Initialize the `GarageDoor` object for the given configuration."""
+        self.door = GarageDoor(**garage_door_config)
+        self.status = Status.CLOSED
 
-        DOOR = GarageDoor(**garage_door_config)
-        return DOOR
+    def open_door(self):
+        """Open the `GarageDoor` and update the status."""
+        self.door.open_door()
+        self.status = Status.OPENED
 
-    if garage_door_config:
-        logging.warning(
-            "Garage door already configured. Ignoring configuration")
+    def close_door(self):
+        """Close the `GarageDoor` and update the status."""
+        self.door.close_door()
+        self.status = Status.CLOSED
 
-    return DOOR
+    def get_guessed_status(self):
+        """Return the guessed status of the door."""
+        return self.status
+
+    def set_status(self, status: Status):
+        """Set the current status of the door."""
+        self.status = status

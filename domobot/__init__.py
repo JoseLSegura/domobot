@@ -1,1 +1,3 @@
-VERSION = '0.1'
+"""domobot package."""
+
+VERSION = "0.1"

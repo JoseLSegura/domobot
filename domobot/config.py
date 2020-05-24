@@ -9,47 +9,58 @@ from aiogram.types.user import User
 from domobot.schema import CONFIG_JSON_SCHEMA
 
 
-CONFIG = None
 LOGGER = logging.getLogger(__name__)
 
 
-def load_config(file_path):
-    """Open the file pointed by `file_path` argument and load the
-    configuration."""
+class Config:
+    """Class containing configuration related methods."""
 
-    global CONFIG
+    CONFIG = None
 
-    if CONFIG is not None:
-        return CONFIG
+    @classmethod
+    def load_config(cls, file_path):
+        """Load a configuration from the file `file_path`."""
+        if cls.CONFIG is not None:
+            return cls.CONFIG
 
-    with open(file_path, 'r') as config_file:
-        CONFIG = json.loads(config_file.read())
-        try:
-            jsonschema.validate(CONFIG, CONFIG_JSON_SCHEMA)
+        with open(file_path, "r") as config_file:
+            cls.CONFIG = json.loads(config_file.read())
+            try:
+                jsonschema.validate(cls.CONFIG, CONFIG_JSON_SCHEMA)
 
-        except jsonschema.ValidationError:
-            LOGGER.error("Error validating the configuration file %s",
-                         file_path)
-            return None
+            except jsonschema.ValidationError:
+                LOGGER.error(
+                    "Error validating the configuration file %s", file_path
+                )
+                return None
 
-    for authorized_user in CONFIG["telegram"]["authorized_users"]:
-        if authorized_user.isnumeric():
-            user_id = int(authorized_user)
-            CONFIG["telegram"]["authorized_users"].remove(authorized_user)
-            CONFIG["telegram"]["authorized_users"].append(user_id)
+        authorized_users = cls.CONFIG.get("telegram", dict()).get(
+            "authorized_users", list()
+        )
+        int_authorized_users = list
 
-    return CONFIG
+        for authorized_user in authorized_users:
+            if authorized_user.isnumeric():
+                user_id = int(authorized_user)
+                int_authorized_users.append(user_id)
 
+        cls.CONFIG.get("telegram", dict())[
+            "authorized_users"
+        ] = int_authorized_users
 
-def get_config():
-    """Return the loaded config or None if no config is loaded."""
+        return cls.CONFIG
 
-    global CONFIG
-    return CONFIG
+    @classmethod
+    def get_config(cls) -> dict:
+        """Return the loaded config or None if no config is loaded."""
+        return cls.CONFIG
 
 
 def check_authorized_user(user: User) -> bool:
     """Check if the given user is authorized in configuration."""
-
-    authorized_users = CONFIG["telegram"]["authorized_users"]
+    authorized_users = (
+        Config.get_config()
+        .get("telegram", dict())
+        .get("authorized_users", list())
+    )
     return user.id in authorized_users or user.username in authorized_users

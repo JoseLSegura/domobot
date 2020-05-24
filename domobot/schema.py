@@ -10,8 +10,8 @@ CONFIG_JSON_SCHEMA = {
                 "token": {"type": "string"},
                 "authorized_users": {
                     "type": "array",
-                    "items": {"type": "string"}
-                }
+                    "items": {"type": "string"},
+                },
             },
             "required": ["token"],
         },
@@ -24,7 +24,7 @@ CONFIG_JSON_SCHEMA = {
                 "open_time": {"type": "number"},
                 "close_time": {"type": "number"},
             },
-            "required": ["lock_pin", "open_pin", "close_pin"]
-        }
-    }
+            "required": ["lock_pin", "open_pin", "close_pin"],
+        },
+    },
 }
