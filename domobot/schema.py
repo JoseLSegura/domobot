@@ -18,13 +18,14 @@ CONFIG_JSON_SCHEMA = {
         "garage_door": {
             "type": "object",
             "properties": {
-                "lock_pin": {"type": "integer"},
+                "electric_lock_pin": {"type": "integer"},
                 "open_pin": {"type": "integer"},
                 "close_pin": {"type": "integer"},
                 "open_time": {"type": "number"},
                 "close_time": {"type": "number"},
             },
-            "required": ["lock_pin", "open_pin", "close_pin"],
+            "required": ["electric_lock_pin", "open_pin", "close_pin"],
         },
     },
+    "required": ["telegram", "garage_door"]
 }

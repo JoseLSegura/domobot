@@ -37,12 +37,14 @@ class Config:
         authorized_users = cls.CONFIG.get("telegram", dict()).get(
             "authorized_users", list()
         )
-        int_authorized_users = list
+        int_authorized_users = list()
 
         for authorized_user in authorized_users:
             if authorized_user.isnumeric():
                 user_id = int(authorized_user)
                 int_authorized_users.append(user_id)
+            else:
+                int_authorized_users.append(authorized_user)
 
         cls.CONFIG.get("telegram", dict())[
             "authorized_users"
@@ -58,9 +60,14 @@ class Config:
 
 def check_authorized_user(user: User) -> bool:
     """Check if the given user is authorized in configuration."""
+    #breakpoint()
     authorized_users = (
         Config.get_config()
         .get("telegram", dict())
         .get("authorized_users", list())
     )
+
+    is_id_authorized = user.id in authorized_users
+    is_username_authorized = user.username in authorized_users
+
     return user.id in authorized_users or user.username in authorized_users

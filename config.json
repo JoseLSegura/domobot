@@ -1,13 +1,14 @@
 {
-    "telegram": {
-        "token": "",
-        "authorized_users": []
-    },
-    "garage_door": {
-        "lock_pin": 1,
-        "open_pin": 2,
-        "close_pin": 3,
-        "open_time": 15.0,
-        "close_time": 20.0
-    }
+  "telegram": {
+    "token": "",
+    "authorized_users": []
+  },
+  "garage_door": {
+    "fake": true,
+    "electric_lock_pin": 1,
+    "open_pin": 2,
+    "close_pin": 3,
+    "open_time": 15.0,
+    "close_time": 20.0
+  }
 }
