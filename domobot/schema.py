@@ -27,5 +27,5 @@ CONFIG_JSON_SCHEMA = {
             "required": ["electric_lock_pin", "open_pin", "close_pin"],
         },
     },
-    "required": ["telegram", "garage_door"]
+    "required": ["telegram", "garage_door"],
 }

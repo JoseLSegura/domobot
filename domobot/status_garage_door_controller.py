@@ -31,10 +31,18 @@ class StatusGarageController:
         self.bot = Bot(config["telegram"]["token"])
         self.__dispatcher = Dispatcher(self.bot)
 
-        self.__dispatcher.register_message_handler(self.welcome, commands=["start"])
-        self.__dispatcher.register_message_handler(self.open_handler, commands=["open"])
-        self.__dispatcher.register_message_handler(self.close_handler, commands=["close"])
-        self.__dispatcher.register_message_handler(self.door_status, commands=["status"])
+        self.__dispatcher.register_message_handler(
+            self.welcome, commands=["start"]
+        )
+        self.__dispatcher.register_message_handler(
+            self.open_handler, commands=["open"]
+        )
+        self.__dispatcher.register_message_handler(
+            self.close_handler, commands=["close"]
+        )
+        self.__dispatcher.register_message_handler(
+            self.door_status, commands=["status"]
+        )
         self.__dispatcher.register_callback_query_handler(self.keyboard_answer)
 
     def open_door(self):
@@ -64,7 +72,6 @@ class StatusGarageController:
         """Handle for start command."""
         await self.show_keyboard(msg)
 
-
     async def show_keyboard(self, msg: types.Message):
         """Handle command keyboard for showing a buttons keyboard."""
         keyboard_markup = types.InlineKeyboardMarkup()
@@ -73,9 +80,14 @@ class StatusGarageController:
             "Close": "close",
         }
 
-        row_btns = (types.InlineKeyboardButton(text, callback_data=data) for text, data in text_and_data.items())
+        row_btns = (
+            types.InlineKeyboardButton(text, callback_data=data)
+            for text, data in text_and_data.items()
+        )
         keyboard_markup.row(*row_btns)
-        await msg.answer("What do you want to do?", reply_markup=keyboard_markup)
+        await msg.answer(
+            "What do you want to do?", reply_markup=keyboard_markup
+        )
 
     async def keyboard_answer(self, callback_query: types.CallbackQuery):
         """Handle the answer to the keyboard."""
@@ -98,10 +110,12 @@ class StatusGarageController:
         await asyncio.sleep(5)
         await new_msg.delete()
 
+    # pylint: disable=unused-argument
     async def open_handler(self, msg: types.Message):
         """Handle the open command."""
         self.open_door()
 
+    # pylint: disable=unused-argument
     async def close_handler(self, msg: types.Message):
         """Handle the close command."""
         self.close_door()

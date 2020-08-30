@@ -60,14 +60,10 @@ class Config:
 
 def check_authorized_user(user: User) -> bool:
     """Check if the given user is authorized in configuration."""
-    #breakpoint()
     authorized_users = (
         Config.get_config()
         .get("telegram", dict())
         .get("authorized_users", list())
     )
-
-    is_id_authorized = user.id in authorized_users
-    is_username_authorized = user.username in authorized_users
 
     return user.id in authorized_users or user.username in authorized_users
