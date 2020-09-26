@@ -7,7 +7,6 @@ from aiogram import executor
 
 from domobot.config import Config
 from domobot.status_garage_door_controller import StatusGarageController
-from domobot.fake_garage_door import FakeGarageDoor
 
 
 def domobot_main():

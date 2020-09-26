@@ -23,8 +23,5 @@ jobs:
       run: flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
     - name: Lint with pylint
       run: pylint domobot
-    - name: Test with pytest
-      run: |
-        pytest
     - name: Doc style
       run: pydocstyle
