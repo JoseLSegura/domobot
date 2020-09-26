@@ -104,9 +104,8 @@ class StatusGarageController:
             action = self.close_door
 
         new_msg = await callback_query.message.answer(msg_text)
-        action()
-
         await callback_query.answer()
+        action()
         await asyncio.sleep(5)
         await new_msg.delete()
 

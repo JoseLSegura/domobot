@@ -5,7 +5,7 @@
   },
   "garage_door": {
     "fake": true,
-    "electric_lock_pin": 1,
+    "lock_pin": 1,
     "open_pin": 2,
     "close_pin": 3,
     "open_time": 15.0,

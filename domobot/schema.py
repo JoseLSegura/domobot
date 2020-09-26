@@ -23,6 +23,7 @@ CONFIG_JSON_SCHEMA = {
                 "close_pin": {"type": "integer"},
                 "open_time": {"type": "number"},
                 "close_time": {"type": "number"},
+                "fake": {"type": "boolean"}
             },
             "required": ["lock_pin", "open_pin", "close_pin"],
         },
