@@ -4,7 +4,7 @@ import asyncio
 from enum import Enum
 
 from aiogram import Bot, Dispatcher, types
-from garage_door_controller import GarageDoor
+from garage_door_controller.async_garage_door import AsyncGarageDoor
 
 from domobot.config import check_authorized_user
 from domobot.fake_garage_door import FakeGarageDoor
@@ -24,7 +24,7 @@ class StatusGarageController:
             door_cls = FakeGarageDoor
 
         else:
-            door_cls = GarageDoor
+            door_cls = AsyncGarageDoor
 
         self.door = door_cls(**config.get("garage_door", dict()))
         self.status = Status.CLOSED
@@ -45,14 +45,14 @@ class StatusGarageController:
         )
         self.__dispatcher.register_callback_query_handler(self.keyboard_answer)
 
-    def open_door(self):
+    async def open_door(self):
         """Open the `GarageDoor` and update the status."""
-        self.door.open_door()
+        await self.door.open_door()
         self.status = Status.OPENED
 
-    def close_door(self):
+    async def close_door(self):
         """Close the `GarageDoor` and update the status."""
-        self.door.close_door()
+        await self.door.close_door()
         self.status = Status.CLOSED
 
     def get_guessed_status(self):
